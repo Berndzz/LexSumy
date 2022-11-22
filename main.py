@@ -97,7 +97,7 @@ set_stopwords = st.sidebar.selectbox(
 set_threshold = st.sidebar.selectbox(
     'Atur Threshold',
     (0.1, 0.2, 0.3, 0.4, 0.5),
-    help='Kamu bisa memilih ambang batas dari range 0.1-0.3'
+    help='Kamu bisa memilih ambang batas dari range 0.1-0.5'
 )
 
 set_summarize = st.sidebar.selectbox(
