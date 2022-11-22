@@ -1,1 +1,1 @@
-# Ini adalah aplikasi lexSumy
+# Ini adalah aplikasi LexSumy
