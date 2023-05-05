@@ -3,13 +3,13 @@ import streamlit as st
 import nltk
 import uniq_token as uq
 import numpy as np
-import webbrowser
+# import webbrowser
 import streamlit.components.v1 as components
 import evaluate as eval
 import textrank as tr
 
 from lex_rank import LexRank
-from power_methods import stationary_distribution,connected_nodes,_power_method
+from power_methods import stationary_distribution, connected_nodes, _power_method
 from nltk.corpus import stopwords
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from nltk.tokenize import MWETokenizer
@@ -21,9 +21,9 @@ from PIL import Image
 st.title('LexSumy')
 st.write('Made by @Hardus Tukan')
 image = Image.open(r"util\alun_alun.png")
-link = r'https://drive.google.com/file/d/1KQbGHhnQWj60uOmehyaaNQZFvdSVyNQN/view?usp=sharing'
-if st.button('Download Korpus File', help="Butuh file uji untuk meringkas ?  bisa didownload disini"):
-    webbrowser.open_new_tab(link)
+# link = r'https://drive.google.com/file/d/1KQbGHhnQWj60uOmehyaaNQZFvdSVyNQN/view?usp=sharing'
+# if st.button('Download Korpus File', help="Butuh file uji untuk meringkas ?  bisa didownload disini"):
+#     webbrowser.open_new_tab(link)
 
 file_names = []
 # check row_text
@@ -63,6 +63,7 @@ def preprocessing_text(text):
     sw_removed = [' '.join(t) for t in important_token]
     stemmed_sent = [stemmer.stem(sent) for sent in sw_removed]
     return stemmed_sent
+
 
 mwe = MWETokenizer([k.split() for k in uq.unique_token], separator='_')
 
@@ -138,6 +139,7 @@ def get_threshold(number):
         numb = .5
     return numb
 
+
 def get_stopwords(text):
     name = None
     if text == 'Indonesia':
@@ -149,11 +151,14 @@ def get_stopwords(text):
     return name
 
 # html
+
+
 def visualize(sentence_list, best_sentences):
     text = ''
     for sentence in sentence_list:
         if sentence in best_sentences:
-            text += ' ' + str(sentence).replace(sentence,f"<mark>{sentence}</mark>")
+            text += ' ' + str(sentence).replace(sentence,
+                                                f"<mark>{sentence}</mark>")
         else:
             text += ' ' + sentence
     return text
@@ -211,12 +216,10 @@ def main():
                 idfSum1 = lxr._calculate_idf(tf)
                 st.write(idfDocs)
                 st.write(idfSum1)
-                
 
             with st.echo():
                 idf_modified_csn = lxr._calculate_similarity_matrix(tf)
                 st.write(idf_modified_csn)
-            
 
             with st.echo():
                 markov_m = lxr._markov_matrix(idf_modified_csn)
@@ -226,7 +229,7 @@ def main():
                 stat_distr_2 = stationary_distribution(markov_m_w_th)
                 st.write(stat_distr_1)
                 st.write(stat_distr_2)
-            
+
             with st.echo():
                 conect_matrix = connected_nodes(markov_m_w_th)
                 st.write(conect_matrix)
