@@ -13,4 +13,3 @@ urlextract==1.6.0
 networkx==2.8.4
 scikit-learn==0.24.2
 altair==4.2.0
-webbrowser
