@@ -20,7 +20,7 @@ from PIL import Image
 
 st.title('LexSumy')
 st.write('Made by @Hardus Tukan')
-image = Image.open(r"util\alun_alun.png")
+image = Image.open(r"util/alun_alun.png")
 link = r'https://drive.google.com/file/d/1KQbGHhnQWj60uOmehyaaNQZFvdSVyNQN/view?usp=sharing'
 if st.button('Download Korpus File', help="Butuh file uji untuk meringkas ?  bisa didownload disini"):
     webbrowser.open_new_tab(link)
