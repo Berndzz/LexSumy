@@ -25,6 +25,7 @@ link = r'https://drive.google.com/file/d/1KQbGHhnQWj60uOmehyaaNQZFvdSVyNQN/view?
 if st.button('Download Korpus File', help="Butuh file uji untuk meringkas ?  bisa didownload disini"):
     webbrowser.open_new_tab(link)
 
+nltk.download('punkt')
 file_names = []
 # check row_text
 raw_texts = []
