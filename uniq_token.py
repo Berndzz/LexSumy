@@ -37,7 +37,7 @@
 import pandas as pd
 
 try:
-    read_json = pd.read_json(r'util\label_mini_2.json')
+    read_json = pd.read_json(r'util/label_mini_2.json')
 except FileNotFoundError:
     print("File not found.")
     # handle the exception as needed
