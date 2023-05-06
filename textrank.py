@@ -1,19 +1,22 @@
 import numpy as np
 import re
 import networkx
+import nltk
+
 
 from nltk.corpus import stopwords
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from nltk.tokenize import word_tokenize, sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-
+nltk.download('stopwords')
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
 stop_words = set(stopwords.words("indonesian"))
 
+
 def normalize_document(doc):
-    doc = re.sub(r'[^a-zA-Z\s]', '', doc, re.I|re.A)
+    doc = re.sub(r'[^a-zA-Z\s]', '', doc, re.I | re.A)
     doc = doc.lower()
     doc = doc.strip()
     tokens = word_tokenize(doc)
@@ -21,7 +24,9 @@ def normalize_document(doc):
     doc = ' '.join(filtered_tokens)
     return doc
 
+
 normalize_corpus = np.vectorize(normalize_document)
+
 
 def textRank(sentences):
     preprocessing = normalize_corpus(sentences)
