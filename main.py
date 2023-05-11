@@ -7,6 +7,7 @@ import webbrowser
 import streamlit.components.v1 as components
 import evaluate as eval
 import textrank as tr
+import streamlit as st
 
 from lex_rank import LexRank
 from power_methods import stationary_distribution, connected_nodes, _power_method
@@ -17,6 +18,9 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from collections import Counter
 from chart import chart as charts
 from PIL import Image
+from docx import Document
+from PyPDF2 import PdfReader
+
 
 st.title('LexSumy')
 st.write('Made by @Hardus Tukan')
@@ -30,13 +34,38 @@ nltk.download('punkt')
 file_names = []
 # check row_text
 raw_texts = []
-upload_file = st.file_uploader(
-    'Input Documents', type="txt", accept_multiple_files=True)
-for upload_files in upload_file:
-    byte_data = str(upload_files.read(), "utf-8")
-    raw_texts.append(byte_data)
-    title_file_name = upload_files.name.replace('.txt', '')
-    file_names.append(title_file_name)
+
+input_option = st.selectbox("Input Option", ["File Uploader", "Input Text"])
+
+if input_option == "File Uploader":
+    upload_file = st.file_uploader(
+        'Input Documents', type=["txt", "docx", "pdf"], accept_multiple_files=True)
+    if upload_file:
+        for upload_files in upload_file:
+            if upload_files.type == "text/plain":  # Menggunakan file .txt
+                byte_data = str(upload_files.read(), "utf-8")
+                raw_texts.append(byte_data)
+            elif upload_files.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":  # Menggunakan file .docx
+                doc = Document(upload_files)
+                doc_text = "\n".join(
+                    [paragraph.text for paragraph in doc.paragraphs])
+                raw_texts.append(doc_text)
+            elif upload_files.type == "application/pdf":  # Menggunakan file .pdf
+                pdf_reader = PdfReader(upload_files)
+                pdf_text = ""
+                for page in pdf_reader.pages:
+                    pdf_text += page.extract_text()
+                raw_texts.append(pdf_text)
+
+            title_file_name = upload_files.name.replace(
+                '.txt', '').replace('.docx', '').replace('.pdf', '')
+            file_names.append(title_file_name)
+
+if input_option == "Input Text":
+    text_input = st.text_area("Input Text", height=200)
+    if text_input:
+        raw_texts.append(text_input)
+        file_names.append("Input Text")
 
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
@@ -82,6 +111,8 @@ def phrase_preprocessing_text(text):
 
 
 # sidebar
+
+
 st.sidebar.image(image, use_column_width=True,
                  caption="Support by Alun-alun UKDW")
 
