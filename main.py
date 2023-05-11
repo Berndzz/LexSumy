@@ -8,6 +8,7 @@ import streamlit.components.v1 as components
 import evaluate as eval
 import textrank as tr
 import streamlit as st
+import pdfplumber
 
 from lex_rank import LexRank
 from power_methods import stationary_distribution, connected_nodes, _power_method
@@ -19,7 +20,6 @@ from collections import Counter
 from chart import chart as charts
 from PIL import Image
 from docx import Document
-from PyPDF2 import PdfReader
 
 
 st.title('LexSumy')
@@ -51,11 +51,11 @@ if input_option == "File Uploader":
                     [paragraph.text for paragraph in doc.paragraphs])
                 raw_texts.append(doc_text)
             elif upload_files.type == "application/pdf":  # Menggunakan file .pdf
-                pdf_reader = PdfReader(upload_files)
-                pdf_text = ""
-                for page in pdf_reader.pages:
-                    pdf_text += page.extract_text()
-                raw_texts.append(pdf_text)
+                with pdfplumber.open(upload_files) as pdf:
+                    pdf_text = ""
+                    for page in pdf.pages:
+                        pdf_text += page.extract_text()
+                    raw_texts.append(pdf_text)
 
             title_file_name = upload_files.name.replace(
                 '.txt', '').replace('.docx', '').replace('.pdf', '')
